@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:workday="http://www.mulesoft.org/schema/mule/workday" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/workday http://www.mulesoft.org/schema/mule/workday/current/mule-workday.xsd">
+	<flow name="mule-training2Flow" doc:id="3ab93914-1710-4571-b968-13a8ff5de98e" >
+		<set-payload value="#[[1,2,3,4,'5','This','is', 'an','array']]" doc:name="Set Payload" doc:id="1a242d80-7572-428d-80b9-2e5f08d7c796" />
+		<logger level="INFO" doc:name="Logger" doc:id="c6c86c1b-ba00-49b3-a63b-a3da51b88b97" message="Array Input == #[payload]"/>
+		<foreach doc:name="For Each" doc:id="9630f09d-830b-4d92-91eb-e22c3161ab80" >
+			<logger level="INFO" doc:name="Logger- Index" doc:id="079f4254-7494-4f93-ac7e-93378589917a" message="Index for First flow== #[vars.counter]"/>
+			<logger level="INFO" doc:name="Logger- Value" doc:id="09871093-b626-4175-b6d1-455204cc2d38" message="Value insde for loop for First flow == #[payload]"/>
+		</foreach>
+	</flow>
+	<flow name="mule-training2Flow1" doc:id="7f6644e5-f822-4ec3-b64c-e9a7e4a3a80e" >
+		<set-variable value="#[[1,2,3,4,5]]" doc:name="array1" doc:id="e66f132f-d566-49be-90e4-9906a15e4115" variableName="myvar"/>
+		<set-variable value="#[['This','is','an','array']]" doc:name="array2" doc:id="47f4c075-4222-473d-a45e-f56b978ae56a" variableName="array2"/>
+		<logger level="INFO" doc:name="Logger" doc:id="386c7ba2-1034-44c1-9664-dc1c482dfca5" />
+		<foreach doc:name="For Each-array1" doc:id="aea3ca1a-4742-4fab-b9b9-56d5848276e3" collection="#[vars.myvar]" counterVariableName="i" batchSize="2">
+			<async doc:name="Async" doc:id="426c86e9-edc1-47b6-b0a2-7e744a8c4260" >
+				<logger level="INFO" doc:name="Logger" doc:id="968616c5-ecff-411e-a05d-9f5e270f3aef" message="For each async== #[payload].. Counter == #[vars.i]" />
+			</async>
+		</foreach>
+		<foreach doc:name="For Each - Array 2" doc:id="bcad1861-997f-4a6c-b6c8-bb6c259e77ae" collection="#[vars.array2]" counterVariableName="j">
+			<logger level="INFO" doc:name="Logger" doc:id="6b19c41e-34cb-4d44-9bb0-145c56ce07a1" message="#[payload]"/>
+			<logger level="INFO" doc:name="Logger" doc:id="e35f3acd-701c-4a5f-b499-77a593004086" message="Counter 2nd flow 2nd loop == #[vars.j]"/>
+		</foreach>
+	</flow>
+</mule>

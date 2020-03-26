@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3433d47e-b44e-4705-9946-2ef4e64a68bd" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="muletraining1Flow" doc:id="b51e3f48-b73e-4fbc-a3cf-0ac0daa68ce2" >
+		<http:listener doc:name="Listener" doc:id="06c8e073-6687-4dff-bcec-e0eafbd1fb87" config-ref="HTTP_Listener_config" path="/mule/training/{day}"/>
+		<logger level="INFO" doc:name="Logger-FInal" doc:id="dd3844cd-4068-4640-91fc-c22bd1b5085d" message="URI Paramater values == #[attributes.uriParams.'day']" />
+		<flow-ref doc:name="Flow Reference" doc:id="e9b738dc-5b63-46d7-b744-07815f386738" name="muletraining1Sub_Flow"/>
+		<logger level="INFO" doc:name="Logger-Initial" doc:id="3c60e035-8371-4acc-a8af-bc74991eafa4" message="Value from query ID == #[attributes.queryParams.'id'], Name == #[attributes.queryParams.'name'].. Request URI == #[attributes.requestUri]" />
+	</flow>
+	<sub-flow name="muletraining1Sub_Flow" doc:id="68feebdb-a0d9-4f34-bd56-4997389dae6b" >
+		<logger level="INFO" doc:name="Logger-1" doc:id="1fde02e4-4445-4436-8e62-bfdec66219f7" message="logger1.. #[payload]" />
+		<set-variable value="#[15]" doc:name="num1" doc:id="e144bcb0-ef5e-4766-8e70-8a1be76f3eee" variableName="num1"/>
+		<logger level="INFO" doc:name="Logger- Num1" doc:id="3f2c61ec-b504-4209-a7e6-3cd627f3073d" message="Var1 value == #[vars.num1]"/>
+		<set-variable value="#[20]" doc:name="num2" doc:id="71ce00a9-f521-4428-8bb0-6c1635e1d029" variableName="num2"/>
+		<choice doc:name="Choice" doc:id="adba1476-449c-4f68-861a-28047ac1723d" >
+			<when expression="#[vars.num1 != 15]">
+				<logger level="INFO" doc:name="Logger" doc:id="eb2b7181-607a-4ae0-b95e-a49e92152165" message="#['Condition is true. Case passed']"/>
+			</when>
+			<when expression="#[vars.num2 == 20]">
+				<logger level="INFO" doc:name="Logger" doc:id="21e57c52-cfea-4701-9f1c-2e85ee741e06" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="f8576746-2cc7-4f95-a478-6f42dda691fa" message="#['Case failed']"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger- Num 2" doc:id="def00ab9-43af-4a29-bed5-b0766e52e645" message="num2 value == #[vars.num2]"/>
+		<set-payload value="#[vars.num1 + vars.num2]" doc:name="Set Payload-- Added 2 numbers" doc:id="a539eba4-001d-41bd-9fc0-a3c82563115f" />
+		<logger level="INFO" doc:name="Logger-2" doc:id="61fa9597-ea01-44c0-96cf-633b11827de6" message="logger2.. #[payload]" />
+	</sub-flow>
+	<sub-flow name="day2_subflow" doc:id="36489781-593c-44cb-bdd0-6efffbbcdef5" >
+		<set-variable value="#[100]" doc:name="Set Variable" doc:id="e7bb36c9-5c32-48aa-b54c-740b9edfdab2" variableName="num3"/>
+		<first-successful doc:name="First Successful" doc:id="c1379822-79dc-4ba6-98d2-5c4714cf97b1" >
+			<route >
+				<logger level="INFO" doc:name="Logger1" doc:id="c3671bb2-da1b-427c-a154-cf3291ee87c0" message="First success.. Logger 1"/>
+			</route>
+			<route >
+				<logger level="INFO" doc:name="Logger" doc:id="659efa13-b831-4134-b589-6dbad1993d77" />
+			</route>
+			<route >
+				<logger level="INFO" doc:name="Logger" doc:id="24150a9e-01b3-481e-b198-7b99552c4a98" />
+			</route>
+		</first-successful>
+	</sub-flow>
+</mule>

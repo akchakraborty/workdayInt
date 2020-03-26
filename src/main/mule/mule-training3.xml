@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd">
+	<flow name="mule-training3Flow" doc:id="30ea73de-7a3a-4965-8c8f-8f62d0f4ce8f" >
+		<set-payload value="#[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]]" doc:name="Set Payload" doc:id="97ee3581-1a00-4f03-bd00-1a8bf923da7c" />
+		<foreach doc:name="For Each" doc:id="31eb9b05-9264-4f98-83f2-dee35aa16b8a" >
+			<logger level="INFO" doc:name="Logger" doc:id="13d80e4e-3af5-432e-ac15-7ea2beaa2ed8" message="Counter == #[vars.counter] .. Value == #[payload]"/>
+		</foreach>
+	</flow>
+	<flow name="mule-training3Flow1" doc:id="ae78770f-c639-4eac-ac73-f49da176bd21" >
+		<http:listener doc:name="Listener" doc:id="60801b15-a229-413a-bea6-457fcb068d43" config-ref="HTTP_Listener_config" path="/test"/>
+		<try doc:name="Try" doc:id="b04016dc-ec9f-4100-9960-7326225a05f8" >
+			<raise-error doc:name="Raise error" doc:id="6f507f8e-9dfa-4087-b89e-bea263581e2e" type="ANY"/>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ff96e758-ca1a-47f1-928e-aa06d3774f62" >
+					<set-payload value="Error try flow" doc:name="Set Payload" doc:id="4c0da69e-e413-4183-914c-372b65400c82" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="Sucess- Main flow" doc:name="Set Payload" doc:id="5b782032-0233-4df8-bdba-13f946f088b2" />
+		<logger level="INFO" doc:name="Logger" doc:id="206e1a19-2d3d-49fb-9f30-565c20cb56b1" message="#[payload]"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a138ec64-7230-4dff-b7a1-e72a64a3572f" >
+				<set-payload value="Error main flow" doc:name="Set Payload" doc:id="ecdbb005-d8e0-4847-a14b-98cb0cf2026c" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
