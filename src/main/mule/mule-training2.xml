@@ -13,6 +13,9 @@ http://www.mulesoft.org/schema/mule/workday http://www.mulesoft.org/schema/mule/
 			<logger level="INFO" doc:name="Logger- Value" doc:id="09871093-b626-4175-b6d1-455204cc2d38" message="Value insde for loop for First flow == #[payload]"/>
 		</foreach>
 	</flow>
+	
+	
+	
 	<flow name="mule-training2Flow1" doc:id="7f6644e5-f822-4ec3-b64c-e9a7e4a3a80e" >
 		<set-variable value="#[[1,2,3,4,5]]" doc:name="array1" doc:id="e66f132f-d566-49be-90e4-9906a15e4115" variableName="myvar"/>
 		<set-variable value="#[['This','is','an','array']]" doc:name="array2" doc:id="47f4c075-4222-473d-a45e-f56b978ae56a" variableName="array2"/>
